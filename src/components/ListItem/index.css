@@ -1,0 +1,14 @@
+.list-item {
+    padding: var(--base-spacing);
+    cursor: pointer;
+}
+
+.list-item:hover {
+    background-color: #464646;
+}
+
+.selected {
+    background-color: #988238;
+    /* color: var(--dark-color); */
+}
+

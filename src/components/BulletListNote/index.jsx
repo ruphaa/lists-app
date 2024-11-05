@@ -6,11 +6,11 @@ export const BulletListNote = ({ list }) => {
   return (
     <div className="bullet-list">
       <h2>Title</h2>
-      <ul>
+      <ol>
         {notes.map((note, index) => (
           <li key={index}>{note}</li>
         ))}
-      </ul>
+      </ol>
     </div>
   );
 };

@@ -27,6 +27,7 @@ function App() {
     },
   ]);
   const [itemId, setItemId] = useState(1);
+  const [selectedItem, setSelectedItem] = useState(lists[0]);
 
   function handleAddList() {
     const newList = {
@@ -39,17 +40,35 @@ function App() {
   }
 
   function handleRemoveList(listId) {
-    if (lists.length === 0) {
-      setItemId(0);
-      return;
-    }
-    const updatedLists = lists.filter((list) => list.id !== listId);
-    setLists([...updatedLists]);
-    if (updatedLists.length === 0) {
-      setItemId(0);
-    } else {
-      setItemId(updatedLists[0].id);
-    }
+    setLists((lists) => {
+      const updatedLists = lists.filter(list => list.id !== listId);
+      if (updatedLists.length === 0) {
+        setItemId(0);
+        setSelectedItem(null);
+      } else {
+        setItemId(updatedLists[0].id);
+        setSelectedItem(updatedLists[0]);
+      }
+      return updatedLists;
+    });
+  }
+
+  function handleListDetailsChange(id, title, details) {
+    setLists((lists) => {
+      return lists.map((list) => {
+        if (list.id === id) {
+          return { ...list, title: title, details: details };
+        }
+        return list;
+      });
+    });
+    setItemId(id);
+  }
+
+  function setCurrentItem(id) {
+    const selectedItem = lists.find((list) => list.id === id);
+    setSelectedItem(selectedItem);
+    setItemId(id);
   }
 
   return (
@@ -57,8 +76,8 @@ function App() {
       <aside className="side-panel">
         <ListContainer
           lists={lists}
-          setCurrentItem={setItemId}
-          onAddList={handleAddList}
+          selectedItemId={itemId}
+          setCurrentItem={setCurrentItem}
         />
       </aside>
       <div className="header">
@@ -73,7 +92,10 @@ function App() {
         {lists.length === 0 ? (
           <p>No lists available</p>
         ) : (
-          <ListDetails list={lists.find((list) => list.id === itemId)} />
+          <ListDetails
+            list={selectedItem}
+            onUpdateListDetails={(id, title, details) => handleListDetailsChange(id, title, details)}
+          />
         )}
       </div>
     </div>

@@ -1,7 +1,7 @@
 import "./index.css";
 import { ListItem } from "../ListItem";
 
-export const ListContainer = ({ lists, setCurrentItem }) => {
+export const ListContainer = ({ lists, setCurrentItem, selectedItemId }) => {
   return (
     <div className="list-container">
       <div className="flex">
@@ -16,6 +16,7 @@ export const ListContainer = ({ lists, setCurrentItem }) => {
             id={list.id}
             title={list.title}
             setCurrentItem={setCurrentItem}
+            selectedItemId={selectedItemId}
           />
         ))
       )}
