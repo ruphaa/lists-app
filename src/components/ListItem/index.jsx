@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import './index.css'
 
-export const ListItem = ({ id, title, setCurrentItem, selectedItemId }) => {
+export const ListItem = ({ id, title, selectedItemId, setCurrentItem }) => {
   const [isSelected, setIsSelected] = useState(false);
 
   useEffect(() => {
@@ -12,12 +12,9 @@ export const ListItem = ({ id, title, setCurrentItem, selectedItemId }) => {
     }
   }, [selectedItemId]);
 
-  const handleClick = () => {
-    setCurrentItem(id)
-  }
   return (
-    <div className={`list-item ${isSelected && 'selected'}`} onClick={() => {
-      handleClick();
+    <div className={`list-item ${isSelected ? 'selected' : ''}`} onClick={() => {
+      setCurrentItem(id);
       setIsSelected(true);
     }}>
       {title} 

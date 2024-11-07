@@ -1,7 +1,13 @@
 import "./index.css";
 import { ListItem } from "../ListItem";
+import { ListContext } from "../../ListContext";
+import { useContext } from "react";
 
-export const ListContainer = ({ lists, setCurrentItem, selectedItemId }) => {
+export const ListContainer = ({ lists }) => {
+  const {
+    setCurrentItem,
+    itemId,
+  } = useContext(ListContext);
   return (
     <div className="list-container">
       <div className="flex">
@@ -16,7 +22,7 @@ export const ListContainer = ({ lists, setCurrentItem, selectedItemId }) => {
             id={list.id}
             title={list.title}
             setCurrentItem={setCurrentItem}
-            selectedItemId={selectedItemId}
+            selectedItemId={itemId}
           />
         ))
       )}

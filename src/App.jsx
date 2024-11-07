@@ -1,84 +1,30 @@
-import { useState } from "react";
 import "./App.css";
+import { useContext } from "react";
 import { ListContainer } from "./components/ListContainer";
 import { ListDetails } from "./components/ListDetails";
+import { ListContext, ListContextProvider } from "./ListContext";
 
 function App() {
-  const [lists, setLists] = useState([
-    {
-      id: 1,
-      title: "Best books 2024",
-      details: "Contains the best books to read in 2024",
-    },
-    {
-      id: 2,
-      title: "Quick app ideas",
-      details: "Contains quick app ideas to work on",
-    },
-    {
-      id: 3,
-      title: "Blog ideas",
-      details: "Contains blog ideas to write about",
-    },
-    {
-      id: 4,
-      title: "Podcasts to follow",
-      details: "Contains podcasts to follow",
-    },
-  ]);
-  const [itemId, setItemId] = useState(1);
-  const [selectedItem, setSelectedItem] = useState(lists[0]);
+  return (
+    <ListContextProvider>
+      <Component />
+    </ListContextProvider>
+  );
+}
 
-  function handleAddList() {
-    const newList = {
-      id: lists.length + 1,
-      title: `List ${lists.length + 1}`,
-      details: `Contains items for list ${lists.length + 1}`,
-    };
-    setLists([...lists, newList]);
-    setItemId(newList.id);
-  }
-
-  function handleRemoveList(listId) {
-    setLists((lists) => {
-      const updatedLists = lists.filter(list => list.id !== listId);
-      if (updatedLists.length === 0) {
-        setItemId(0);
-        setSelectedItem(null);
-      } else {
-        setItemId(updatedLists[0].id);
-        setSelectedItem(updatedLists[0]);
-      }
-      return updatedLists;
-    });
-  }
-
-  function handleListDetailsChange(id, title, details) {
-    setLists((lists) => {
-      return lists.map((list) => {
-        if (list.id === id) {
-          return { ...list, title: title, details: details };
-        }
-        return list;
-      });
-    });
-    setItemId(id);
-  }
-
-  function setCurrentItem(id) {
-    const selectedItem = lists.find((list) => list.id === id);
-    setSelectedItem(selectedItem);
-    setItemId(id);
-  }
-
+const Component = () => {
+  const {
+    lists,
+    itemId,
+    selectedItem,
+    handleAddList,
+    handleRemoveList,
+    handleListDetailsChange,
+  } = useContext(ListContext);
   return (
     <div className="container">
       <aside className="side-panel">
-        <ListContainer
-          lists={lists}
-          selectedItemId={itemId}
-          setCurrentItem={setCurrentItem}
-        />
+        <ListContainer lists={lists}/>
       </aside>
       <div className="header">
         <button className="button" onClick={handleAddList}>
@@ -94,12 +40,14 @@ function App() {
         ) : (
           <ListDetails
             list={selectedItem}
-            onUpdateListDetails={(id, title, details) => handleListDetailsChange(id, title, details)}
+            onUpdateListDetails={(id, title, details) =>
+              handleListDetailsChange(id, title, details)
+            }
           />
         )}
       </div>
     </div>
   );
-}
+};
 
 export default App;
