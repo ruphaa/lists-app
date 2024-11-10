@@ -1,13 +1,13 @@
 import "./index.css";
 import { ListItem } from "../ListItem";
-import { ListContext } from "../../ListContext";
+import { ListContext, ListType } from "../../ListContext";
 import { useContext } from "react";
 
-export const ListContainer = ({ lists }) => {
+export const ListContainer = ({ lists }: {lists: ListType[]}) => {
   const {
     setCurrentItem,
     itemId,
-  } = useContext(ListContext);
+  } = useContext(ListContext) || {};
   return (
     <div className="list-container">
       <div className="flex">

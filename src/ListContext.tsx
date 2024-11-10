@@ -1,9 +1,39 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState } from "react";
 
-const ListContext = createContext();
+export type ListContextType = {
+  lists: ListType[];
+  selectedItem: ListType | undefined;
+  itemId: number;
+  setLists: React.Dispatch<React.SetStateAction<ListType[]>>;
+  setSelectedItem: React.Dispatch<React.SetStateAction<ListType | undefined>>;
+  setItemId: React.Dispatch<React.SetStateAction<number>>;
+  handleAddList: () => void;
+  handleRemoveList: (listId: number) => void;
+  handleListDetailsChange: (id: number, title: string, details: string) => void;
+  setCurrentItem: (id: number) => void;
+};
 
-const ListContextProvider = ({ children }) => {
-  const [lists, setLists] = useState([
+const ListContext = createContext<ListContextType>({
+  lists: [],
+  selectedItem: undefined,
+  itemId: 0,
+  setLists: () => {},
+  setSelectedItem: () => {},
+  setItemId: () => {},
+  handleAddList: () => {},
+  handleRemoveList: () => {},
+  handleListDetailsChange: () => {},
+  setCurrentItem: () => {},
+});
+
+export type ListType = {
+    id: number;
+    title: string;
+    details: string;
+}
+
+const ListContextProvider = ({ children }: {children: React.ReactNode}) => {
+  const [lists, setLists] = useState<ListType[]>([
     {
       id: 1,
       title: "Best books 2024",
@@ -26,7 +56,7 @@ const ListContextProvider = ({ children }) => {
     },
   ]);
   const [itemId, setItemId] = useState(1);
-  const [selectedItem, setSelectedItem] = useState(lists[0]);
+  const [selectedItem, setSelectedItem] = useState<ListType | undefined>(lists[0]);
 
   function handleAddList() {
     const newList = {
@@ -38,12 +68,12 @@ const ListContextProvider = ({ children }) => {
     setItemId(newList.id);
   }
 
-  function handleRemoveList(listId) {
+  function handleRemoveList(listId: number) {
     setLists((lists) => {
       const updatedLists = lists.filter((list) => list.id !== listId);
       if (updatedLists.length === 0) {
         setItemId(0);
-        setSelectedItem(null);
+        setSelectedItem(undefined);
       } else {
         setItemId(updatedLists[0].id);
         setSelectedItem(updatedLists[0]);
@@ -52,7 +82,7 @@ const ListContextProvider = ({ children }) => {
     });
   }
 
-  function handleListDetailsChange(id, title, details) {
+  function handleListDetailsChange(id: number, title: string, details: string) {
     setLists((lists) => {
       return lists.map((list) => {
         if (list.id === id) {
@@ -64,7 +94,7 @@ const ListContextProvider = ({ children }) => {
     setItemId(id);
   }
 
-  function setCurrentItem(id) {
+  function setCurrentItem(id: number) {
     const selectedItem = lists.find((list) => list.id === id);
     setSelectedItem(selectedItem);
     setItemId(id);

@@ -1,8 +1,15 @@
 import { useEffect, useState } from "react";
 import "./index.css";
-import { BulletListNote } from "../BulletListNote";
+import { BulletListNote } from "../BulletListNote/index";
+import { ListType } from "../../ListContext";
 
-export const ListDetails = ({ list, onUpdateListDetails }) => {
+export const ListDetails = ({
+  list,
+  onUpdateListDetails,
+}: {
+  list: ListType;
+  onUpdateListDetails: (id: number, title: string, details: string) => void;
+}) => {
   const [title, setTitle] = useState(list.title); // only during first render
   const [details, setDetails] = useState(list.details);
   const [isEditing, setIsEditing] = useState(false);
@@ -47,11 +54,14 @@ export const ListDetails = ({ list, onUpdateListDetails }) => {
             </>
           ) : (
             <>
-            <div className="details-header">
-              <h1 className="title-input">{title}</h1>
-              <button onClick={() => setIsEditing(true)}>Edit</button>
-            </div>
-            <ul className="details-list" dangerouslySetInnerHTML={{ __html: details }} />
+              <div className="details-header">
+                <h1 className="title-input">{title}</h1>
+                <button onClick={() => setIsEditing(true)}>Edit</button>
+              </div>
+              <ul
+                className="details-list"
+                dangerouslySetInnerHTML={{ __html: details }}
+              />
             </>
           )}
         </>

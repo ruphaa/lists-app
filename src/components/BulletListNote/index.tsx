@@ -1,15 +1,23 @@
-import React, { useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import "./index.css";
 
-export const BulletListNote = ({ details, setDetails }) => {
-  const editorRef = useRef(null);
+type BulletListNoteProps = {
+  details: string | null;
+  setDetails: (details: string) => void;
+}
+
+export const BulletListNote = ({ details, setDetails }: BulletListNoteProps) => {
+  const editorRef = useRef<HTMLUListElement>(null);
   // Initializes editor with an empty bullet point if it’s empty
   const initializeEditor = () => {
-    if (!editorRef.current.innerHTML.trim()) {
-      if(details !== null) {
-        editorRef.current.innerHTML = details;
-      } else {
-        editorRef.current.innerHTML = "<li>&nbsp;</li>";
+    if (editorRef.current) {
+      const editor = editorRef.current;
+      if (!editor.innerHTML.trim()) {
+        if(details !== null) {
+          editor.innerHTML = details;
+        } else {
+          editor.innerHTML = "<li>&nbsp;</li>";
+        }
       }
     }
   };
@@ -17,32 +25,37 @@ export const BulletListNote = ({ details, setDetails }) => {
     initializeEditor();
   }, []);
 
-  const handleKeyDown = (e) => {
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLUListElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
       const newItem = document.createElement('li');
       newItem.innerHTML = '&nbsp;';
-      editorRef.current.appendChild(newItem);
+      editorRef?.current?.appendChild(newItem);
       // Move caret to new line
       const range = document.createRange();
       const sel = window.getSelection();
       range.setStart(newItem, 0);
       range.collapse(true);
-      sel.removeAllRanges();
-      sel.addRange(range);
+      if (sel) {
+        sel.removeAllRanges();
+        sel.addRange(range);
+      }
     }
   };
 
-  const handleInput = (e) => {
-    const childNodes = [...editorRef.current.childNodes];
+  interface HandleInputEvent extends React.FormEvent<HTMLUListElement> {}
+
+  const handleInput = (e: HandleInputEvent) => {
+    const childNodes = [...editorRef.current!.childNodes];
     childNodes.forEach((child) => {
-      if (!child.textContent.trim()) {
+      if (!child.textContent?.trim()) {
         child.remove();
       }
     });
 
     // Update the editor's state
-    setDetails(editorRef.current.innerHTML);
+    setDetails(editorRef.current!.innerHTML);
 
     // Reinitialize if the editor is empty
     initializeEditor();
