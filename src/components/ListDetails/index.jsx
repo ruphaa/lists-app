@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./index.css";
+import { BulletListNote } from "../BulletListNote";
 
 export const ListDetails = ({ list, onUpdateListDetails }) => {
   const [title, setTitle] = useState(list.title); // only during first render
@@ -21,50 +22,40 @@ export const ListDetails = ({ list, onUpdateListDetails }) => {
         <>
           {isEditing ? (
             <>
-              <textarea
-                name="title"
-                rows={4}
-                cols={60}
-                value={title}
-                onChange={(e) => {
-                  setTitle(e.target.value);
-                }}
-              />
-              <textarea
-                name="details"
-                rows={4}
-                cols={60}
-                value={details}
-                onChange={(e) => {
-                  setDetails(e.target.value);
-                }}
-              />
-              <button
-                onClick={() => {
-                  onUpdateListDetails(list.id, title, details);
-                  setIsEditing(false);
-                }}
-              >
-                Submit
-              </button>
+              <div className="details-header">
+                <h1 className="title">
+                  <input
+                    className="title-input"
+                    name="title"
+                    type="text"
+                    value={title}
+                    onChange={(e) => {
+                      setTitle(e.target.value);
+                    }}
+                  />
+                </h1>
+                <button
+                  onClick={() => {
+                    onUpdateListDetails(list.id, title, details);
+                    setIsEditing(false);
+                  }}
+                >
+                  Submit
+                </button>
+              </div>
+              <BulletListNote details={details} setDetails={setDetails} />
             </>
           ) : (
             <>
-              <StaticDetails title={title} text={details} />
+            <div className="details-header">
+              <h1 className="title-input">{title}</h1>
               <button onClick={() => setIsEditing(true)}>Edit</button>
+            </div>
+            <ul className="details-list" dangerouslySetInnerHTML={{ __html: details }} />
             </>
           )}
         </>
       }
     </div>
-  );
-};
-
-const StaticDetails = ({ title, text }) => {
-  return (
-    <>
-      <h2>{title}</h2>
-      <p>{text}</p>
-    </>
   );
 };

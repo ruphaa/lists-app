@@ -1,3 +1,27 @@
 .list-details {
     padding: var(--base-spacing);
 }
+
+.title-input {
+    background: transparent;
+    border: transparent;
+    font-size: 2rem;
+    width: 100%;
+    outline: transparent;
+    color: var(--dark-color);
+    font-weight: 600;
+}
+
+.details-header {
+    display: flex;
+    margin-bottom: var(--base-spacing);
+    align-items: center;
+}
+
+.details-header button {
+    max-height: fit-content;
+}
+
+.details-list {
+    font-size: 1.2rem;
+}

@@ -7,12 +7,12 @@ import { ListContext, ListContextProvider } from "./ListContext";
 function App() {
   return (
     <ListContextProvider>
-      <Component />
+      <AppComponent />
     </ListContextProvider>
   );
 }
 
-const Component = () => {
+const AppComponent = () => {
   const {
     lists,
     itemId,

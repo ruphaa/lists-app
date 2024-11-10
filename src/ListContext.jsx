@@ -7,22 +7,22 @@ const ListContextProvider = ({ children }) => {
     {
       id: 1,
       title: "Best books 2024",
-      details: "Contains the best books to read in 2024",
+      details: "<li>Contains the best books to read in 2024</li>",
     },
     {
       id: 2,
       title: "Quick app ideas",
-      details: "Contains quick app ideas to work on",
+      details: "<li>Contains quick app ideas to work on</li>",
     },
     {
       id: 3,
       title: "Blog ideas",
-      details: "Contains blog ideas to write about",
+      details: "<li>Contains blog ideas to write about</li>",
     },
     {
       id: 4,
       title: "Podcasts to follow",
-      details: "Contains podcasts to follow",
+      details: "<li>Contains podcasts to follow</li>",
     },
   ]);
   const [itemId, setItemId] = useState(1);
