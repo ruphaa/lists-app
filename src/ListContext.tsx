@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 
 export type ListContextType = {
   lists: ListType[];
@@ -33,36 +33,50 @@ export type ListType = {
 }
 
 const ListContextProvider = ({ children }: {children: React.ReactNode}) => {
-  const [lists, setLists] = useState<ListType[]>([
-    {
-      id: 1,
-      title: "Best books 2024",
-      details: "<li>Contains the best books to read in 2024</li>",
-    },
-    {
-      id: 2,
-      title: "Quick app ideas",
-      details: "<li>Contains quick app ideas to work on</li>",
-    },
-    {
-      id: 3,
-      title: "Blog ideas",
-      details: "<li>Contains blog ideas to write about</li>",
-    },
-    {
-      id: 4,
-      title: "Podcasts to follow",
-      details: "<li>Contains podcasts to follow</li>",
-    },
-  ]);
+  const [lists, setLists] = useState<ListType[]>(() => {
+    const savedLists = localStorage.getItem("lists");
+    return savedLists ? JSON.parse(savedLists) : [
+      {
+        id: 1,
+        title: "Best books 2024",
+        details: "<li>Contains the best books to read in 2024</li>",
+      },
+      {
+        id: 2,
+        title: "Quick app ideas",
+        details: "<li>Contains quick app ideas to work on</li>",
+      },
+      {
+        id: 3,
+        title: "Blog ideas",
+        details: "<li>Contains blog ideas to write about</li>",
+      },
+      {
+        id: 4,
+        title: "Podcasts to follow",
+        details: "<li>Contains podcasts to follow</li>",
+      },
+    ];
+  });
   const [itemId, setItemId] = useState(1);
   const [selectedItem, setSelectedItem] = useState<ListType | undefined>(lists[0]);
+
+  useEffect(() => {
+    localStorage.setItem("lists", JSON.stringify(lists))
+  }, [lists]);
+
+  useEffect(() => {
+    if(lists.length > 0) {
+      setSelectedItem(lists[0]);
+      setItemId(lists[0].id);
+    }
+  }, []);
 
   function handleAddList() {
     const newList = {
       id: lists.length + 1,
       title: `List ${lists.length + 1}`,
-      details: `Contains items for list ${lists.length + 1}`,
+      details: `<li>Contains items for list ${lists.length + 1}</li>`,
     };
     setLists([...lists, newList]);
     setItemId(newList.id);

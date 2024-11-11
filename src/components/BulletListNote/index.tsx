@@ -44,9 +44,7 @@ export const BulletListNote = ({ details, setDetails }: BulletListNoteProps) => 
     }
   };
 
-  interface HandleInputEvent extends React.FormEvent<HTMLUListElement> {}
-
-  const handleInput = (e: HandleInputEvent) => {
+  const handleInput = (e: React.FormEvent<HTMLUListElement>) => {
     const childNodes = [...editorRef.current!.childNodes];
     childNodes.forEach((child) => {
       if (!child.textContent?.trim()) {
