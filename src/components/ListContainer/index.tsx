@@ -1,10 +1,11 @@
 import "./index.css";
 import { ListItem } from "../ListItem";
-import { ListContext, ListType } from "../../ListContext";
+import { ListContext } from "../../ListContext";
 import { useContext } from "react";
 
-export const ListContainer = ({ lists }: {lists: ListType[]}) => {
+export const ListContainer = () => {
   const {
+    lists,
     setCurrentItem,
     itemId,
   } = useContext(ListContext) || {};

@@ -1,4 +1,36 @@
 import React, { createContext, useEffect, useState } from "react";
+import { getAllItems, insertItem } from "./data/list";
+
+const defaultList = [
+  {
+    id: 1,
+    title: "Best books 2024",
+    details: "<li>Contains the best books to read in 2024</li>",
+  },
+  {
+    id: 2,
+    title: "Quick app ideas",
+    details: "<li>Contains quick app ideas to work on</li>",
+  },
+  {
+    id: 3,
+    title: "Blog ideas",
+    details: "<li>Contains blog ideas to write about</li>",
+  },
+  {
+    id: 4,
+    title: "Podcasts to follow",
+    details: "<li>Contains podcasts to follow</li>",
+  },
+];
+
+async function initDefaultStorage(list: ListType[]) {
+  let items: ListType[]  = [];
+  for (let item of list) {
+    items.push(await insertItem(item));
+  }
+  return items;
+}
 
 export type ListContextType = {
   lists: ListType[];
@@ -27,49 +59,37 @@ const ListContext = createContext<ListContextType>({
 });
 
 export type ListType = {
-    id: number;
-    title: string;
-    details: string;
-}
+  id: number;
+  title: string;
+  details: string;
+};
 
-const ListContextProvider = ({ children }: {children: React.ReactNode}) => {
-  const [lists, setLists] = useState<ListType[]>(() => {
-    const savedLists = localStorage.getItem("lists");
-    return savedLists ? JSON.parse(savedLists) : [
-      {
-        id: 1,
-        title: "Best books 2024",
-        details: "<li>Contains the best books to read in 2024</li>",
-      },
-      {
-        id: 2,
-        title: "Quick app ideas",
-        details: "<li>Contains quick app ideas to work on</li>",
-      },
-      {
-        id: 3,
-        title: "Blog ideas",
-        details: "<li>Contains blog ideas to write about</li>",
-      },
-      {
-        id: 4,
-        title: "Podcasts to follow",
-        details: "<li>Contains podcasts to follow</li>",
-      },
-    ];
-  });
+const ListContextProvider = ({ children }: { children: React.ReactNode }) => {
+  const [lists, setLists] = useState<ListType[]>([]);
   const [itemId, setItemId] = useState(1);
-  const [selectedItem, setSelectedItem] = useState<ListType | undefined>(lists[0]);
+  const [selectedItem, setSelectedItem] = useState<ListType | undefined>(
+    undefined
+  );
 
+  // use loading state - show "...loading" text
+  // when data is empty, update data with default lists value, then set it to state
+  // when data is available, set the state with data
+  // for updates, update the data
+  // for deletes, delete the data
   useEffect(() => {
-    localStorage.setItem("lists", JSON.stringify(lists))
-  }, [lists]);
-
-  useEffect(() => {
-    if(lists.length > 0) {
-      setSelectedItem(lists[0]);
-      setItemId(lists[0].id);
-    }
+    getAllItems().then((items) => {
+      if (items.length === 0) {
+        initDefaultStorage(defaultList).then((items) => {
+          setLists(items);
+          setSelectedItem(items[0]);
+          setItemId(items[0].id);
+        });
+      } else {
+        setLists(items);
+        setSelectedItem(lists[0]);
+        setItemId(lists[0].id);
+      }
+    });
   }, []);
 
   function handleAddList() {
