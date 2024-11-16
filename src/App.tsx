@@ -3,6 +3,7 @@ import { ListContainer } from "./components/ListContainer/index";
 import { ListDetailsContainer } from "./components/ListDetailsContainer/index";
 import { ListActions } from "./components/ListActions/index";
 import { ListContextProvider } from "./ListContext";
+import { Grid } from "@radix-ui/themes";
 
 function App() {
   return (
@@ -14,7 +15,8 @@ function App() {
 
 const AppComponent = () => {
   return (
-    <div className="container">
+    // <div className="container">
+    <Grid display="grid" columns="repeat(12, 1fr)" rows="repeat(12, 1fr)">
       <aside className="side-panel">
         <ListContainer />
       </aside>
@@ -24,7 +26,8 @@ const AppComponent = () => {
       <div className="main">
         <ListDetailsContainer />
       </div>
-    </div>
+    </Grid>
+    // </div>
   );
 };
 

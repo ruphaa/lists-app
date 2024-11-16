@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from "react";
-import { getAllItems, insertItem } from "./data/list";
+import { deleteItemById, getAllItems, insertItem, updateItemById } from "./data/list";
 
 const defaultList = [
   {
@@ -39,9 +39,9 @@ export type ListContextType = {
   setLists: React.Dispatch<React.SetStateAction<ListType[]>>;
   setSelectedItem: React.Dispatch<React.SetStateAction<ListType | undefined>>;
   setItemId: React.Dispatch<React.SetStateAction<number>>;
-  handleAddList: () => void;
-  handleRemoveList: (listId: number) => void;
-  handleListDetailsChange: (id: number, title: string, details: string) => void;
+  addNewItem: () => void;
+  removeItemById: (listId: number) => void;
+  updateItem: (id: number, title: string, details: string) => void;
   setCurrentItem: (id: number) => void;
 };
 
@@ -52,9 +52,9 @@ const ListContext = createContext<ListContextType>({
   setLists: () => {},
   setSelectedItem: () => {},
   setItemId: () => {},
-  handleAddList: () => {},
-  handleRemoveList: () => {},
-  handleListDetailsChange: () => {},
+  addNewItem: () => {},
+  removeItemById: () => {},
+  updateItem: () => {},
   setCurrentItem: () => {},
 });
 
@@ -71,11 +71,6 @@ const ListContextProvider = ({ children }: { children: React.ReactNode }) => {
     undefined
   );
 
-  // use loading state - show "...loading" text
-  // when data is empty, update data with default lists value, then set it to state
-  // when data is available, set the state with data
-  // for updates, update the data
-  // for deletes, delete the data
   useEffect(() => {
     getAllItems().then((items) => {
       if (items.length === 0) {
@@ -86,46 +81,52 @@ const ListContextProvider = ({ children }: { children: React.ReactNode }) => {
         });
       } else {
         setLists(items);
-        setSelectedItem(lists[0]);
-        setItemId(lists[0].id);
+        setSelectedItem(items[0]);
+        setItemId(items[0].id);
       }
     });
   }, []);
 
-  function handleAddList() {
-    const newList = {
+  function addNewItem() {
+    const newItem = {
       id: lists.length + 1,
       title: `List ${lists.length + 1}`,
       details: `<li>Contains items for list ${lists.length + 1}</li>`,
     };
-    setLists([...lists, newList]);
-    setItemId(newList.id);
-  }
-
-  function handleRemoveList(listId: number) {
-    setLists((lists) => {
-      const updatedLists = lists.filter((list) => list.id !== listId);
-      if (updatedLists.length === 0) {
-        setItemId(0);
-        setSelectedItem(undefined);
-      } else {
-        setItemId(updatedLists[0].id);
-        setSelectedItem(updatedLists[0]);
-      }
-      return updatedLists;
+    insertItem(newItem).then((item) => {
+      setLists([...lists, item]);
+      setItemId(item.id);
+      setSelectedItem(item);
     });
   }
 
-  function handleListDetailsChange(id: number, title: string, details: string) {
-    setLists((lists) => {
-      return lists.map((list) => {
-        if (list.id === id) {
-          return { ...list, title: title, details: details };
+  function removeItemById(listId: number) {
+    deleteItemById(listId).then(() => {
+      setLists((lists) => {
+        const updatedLists = lists.filter((list) => list.id !== listId);
+        if (updatedLists.length === 0) {
+          setItemId(0);
+          setSelectedItem(undefined);
+        } else {
+          setItemId(updatedLists[0].id);
+          setSelectedItem(updatedLists[0]);
         }
-        return list;
+        return updatedLists;
       });
     });
-    setItemId(id);
+  }
+
+  function updateItem(id: number, title: string, details: string) {
+    updateItemById(id, { id, title, details }). then(() => {
+      setLists((lists) => {
+        return lists.map((list) => {
+          if (list.id === id) {
+            return { ...list, title: title, details: details };
+          }
+          return list;
+        });
+      });
+    });
   }
 
   function setCurrentItem(id: number) {
@@ -143,9 +144,9 @@ const ListContextProvider = ({ children }: { children: React.ReactNode }) => {
         setLists,
         setSelectedItem,
         setItemId,
-        handleAddList,
-        handleRemoveList,
-        handleListDetailsChange,
+        addNewItem,
+        removeItemById,
+        updateItem,
         setCurrentItem,
       }}
     >
