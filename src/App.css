@@ -1,3 +1,8 @@
+@import url("@radix-ui/colors/gray.css");
+@import url("@radix-ui/colors/gray-dark.css");
+@import url("@radix-ui/colors/gray-dark-alpha.css");
+@import url("@radix-ui/colors/gray-alpha.css");
+
 :root {
   --dark-color: #1e1e1e;
   --white-color: #ffffff;
@@ -5,40 +10,43 @@
   --base-spacing: 1rem;
 }
 
-.container {
-  /* max-width: 1280px; */
-  width: 100vw;
-  height: 100vh;
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: repeat(12, 1fr);
+.title {
+  background-color: var(--gray-a2);
+  border-bottom: 1px solid var(--gray-8);
+  border-right: 1px solid var(--gray-8);
 }
 
-.side-panel {
-  grid-column: span 3 / span 3;
-  grid-row: span 12 / span 12;
-  background-color: var(--dark-color);
-  color: rgba(255, 255, 255, 0.87);
-  padding: calc(var(--base-spacing) * 0.5) calc(var(--base-spacing) * 1);
+.sidebar {
+  background-color: var(--gray-a2);
+  border-right: 1px solid var(--gray-8);
+}
+
+.sideTitle {
+  background-color: var(--gray-3);
+  border-bottom: 1px solid var(--gray-8);
+  border-right: 1px solid var(--gray-8);
 }
 
 .header {
-  grid-column: span 9 / span 9;
-  grid-column-start: 4;
-  background-color: var(--grey-color);
+  background-color: var(--gray-3);
+  border-bottom: 1px solid var(--gray-8);
 }
 
-.main {
-  grid-column: span 9 / span 9;
-  grid-row: span 11 / span 11;
-  grid-column-start: 4;
-  grid-row-start: 2;
-  background-color: var(--white-color);
-  color: var(--dark-color);
+.sideContent {
+  background-color: var(--gray-3);
+  border-right: 1px solid var(--gray-8);
 }
-.header {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: calc(var(--base-spacing) * 0.5) calc(var(--base-spacing) * 1);
+
+.content {
+  background-color: var(--gray-3);
+}
+
+.footer {
+  background-color: var(--gray-4);
+  border-top: 1px solid var(--gray-8);
+}
+
+.listItem {
+  width: 100%;
+  padding: 24px 16px;
 }

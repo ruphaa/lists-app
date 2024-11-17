@@ -11,9 +11,6 @@ export const ListContainer = () => {
   } = useContext(ListContext) || {};
   return (
     <div className="list-container">
-      <div className="flex">
-        <h2 className="title">My Lists</h2>
-      </div>
       {lists.length === 0 ? (
         <p>No lists available</p>
       ) : (
