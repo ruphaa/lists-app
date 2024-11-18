@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "./index.css";
 import { BulletListNote } from "../BulletListNote/index";
 import { ListType } from "../../ListContext";
+import { Box, Button, Heading } from "@radix-ui/themes";
 
 export const ListDetails = ({
   list,
@@ -30,7 +31,7 @@ export const ListDetails = ({
           {isEditing ? (
             <>
               <div className="details-header">
-                <h1 className="title">
+                <Heading mb="2" size="4">
                   <input
                     className="title-input"
                     name="title"
@@ -40,15 +41,17 @@ export const ListDetails = ({
                       setTitle(e.target.value);
                     }}
                   />
-                </h1>
-                <button
+                </Heading>
+                <Button
                   onClick={() => {
                     onUpdateListDetails(list.id, title, details);
                     setIsEditing(false);
                   }}
                 >
-                  Submit
-                </button>
+                  <Box p="4" display="block">
+                    Submit
+                  </Box>
+                </Button>
               </div>
               <BulletListNote details={details} setDetails={setDetails} />
             </>
@@ -56,7 +59,11 @@ export const ListDetails = ({
             <>
               <div className="details-header">
                 <h1 className="title-input">{title}</h1>
-                <button onClick={() => setIsEditing(true)}>Edit</button>
+                <Button onClick={() => setIsEditing(true)}>
+                  <Box p="4" display="block">
+                    Edit
+                  </Box>
+                </Button>
               </div>
               <ul
                 className="details-list"

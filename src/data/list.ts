@@ -42,6 +42,24 @@ const updateItemById = async (id: number, item: ListType) => {
   return true;
 }
 
+const archiveItemById = async (id: number) => {
+  // await wait(1000);
+  const items = await getAllItems();
+  const index = items.findIndex((item: ListType) => item.id === id);
+  items[index] = {...items[index], archived: true};
+  await saveItems(items);
+  return true;
+};
+
+const unArchiveItemById = async (id: number) => {
+  // await wait(1000);
+  const items = await getAllItems();
+  const index = items.findIndex((item: ListType) => item.id === id);
+  items[index] = {...items[index], archived: false};
+  await saveItems(items);
+  return true;
+};
+
 const deleteItemById = async (id: number) => {
   // await wait(1000);
   const items = await getAllItems();
@@ -61,6 +79,8 @@ const deleteAllItems = async () => {
 }
 
 export {
+  archiveItemById,
+  unArchiveItemById,
   getAllItems,
   getItemById,
   insertItem,

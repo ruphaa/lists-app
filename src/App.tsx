@@ -2,15 +2,15 @@ import "./App.css";
 import { ListContainer } from "./components/ListContainer/index";
 import { ListDetailsContainer } from "./components/ListDetailsContainer/index";
 import { ListActions } from "./components/ListActions/index";
-import { Button, Heading, Quote, Theme } from "@radix-ui/themes";
+import { Heading, Quote, Theme } from "@radix-ui/themes";
 import { ListContextProvider } from "./ListContext";
-import { Box, Grid, Flex, Text } from "@radix-ui/themes";
-import { ArchiveIcon, HomeIcon } from "@radix-ui/react-icons";
+import { Box, Grid, Flex } from "@radix-ui/themes";
+import { FilterList } from "./components/FilterList";
 
 function App() {
   return (
     <Theme
-      accentColor="lime"
+      accentColor="yellow"
       grayColor="gray"
       panelBackground="solid"
       scaling="100%"
@@ -62,20 +62,7 @@ const AppComponent = () => {
         className="sidebar"
         p="4"
       >
-        <Flex gap="4" direction="column">
-          <Button className="listItem">
-            <Flex justify="start" align="center" gap="2" width="100%">
-              <HomeIcon width="20px" height="20px" />
-              <Text size="3" weight="bold">All Notes</Text>
-            </Flex>
-          </Button>
-          <Button className="listItem" variant="ghost">
-            <Flex justify="start" align="center" gap="2" width="100%">
-              <ArchiveIcon width="20px" height="20px" />
-              <Text size="3" weight="bold">Archived Notes</Text>
-            </Flex>
-          </Button>
-        </Flex>
+        <FilterList />
       </Box>
       <Box
         width="100%"

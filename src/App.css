@@ -47,6 +47,7 @@
 }
 
 .listItem {
-  width: 100%;
   padding: 24px 16px;
+  box-sizing: border-box;
+  margin: 0;
 }

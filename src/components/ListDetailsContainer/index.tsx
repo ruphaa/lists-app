@@ -4,8 +4,7 @@ import { ListDetails } from "../ListDetails";
 import { ListContext } from "../../ListContext";
 
 export const ListDetailsContainer = () => {
-  const { lists, selectedItem, updateItem } =
-    useContext(ListContext) || {};
+  const { lists, selectedItem, updateItem } = useContext(ListContext) || {};
   return lists === undefined || lists.length === 0 ? (
     <p>No lists available</p>
   ) : (
