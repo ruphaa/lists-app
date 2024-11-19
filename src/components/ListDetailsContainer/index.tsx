@@ -11,8 +11,8 @@ export const ListDetailsContainer = () => {
     selectedItem != null && (
       <ListDetails
         list={selectedItem}
-        onUpdateListDetails={(id, title, details) =>
-          updateItem(id, title, details)
+        onUpdateListDetails={(id, props) =>
+          updateItem(id, props)
         }
       />
     )

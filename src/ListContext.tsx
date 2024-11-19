@@ -7,24 +7,32 @@ const defaultList = [
     title: "Best books 2024",
     details: "<li>Contains the best books to read in 2024</li>",
     archived: false,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   },
   {
     id: 2,
     title: "Quick app ideas",
     details: "<li>Contains quick app ideas to work on</li>",
     archived: true,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   },
   {
     id: 3,
     title: "Blog ideas",
     details: "<li>Contains blog ideas to write about</li>",
     archived: false,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   },
   {
     id: 4,
     title: "Podcasts to follow",
     details: "<li>Contains podcasts to follow</li>",
     archived: false,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   },
 ];
 
@@ -77,6 +85,8 @@ export type ListType = {
   title: string;
   details: string;
   archived?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 const ListContextProvider = ({ children }: { children: React.ReactNode }) => {
@@ -132,7 +142,7 @@ const ListContextProvider = ({ children }: { children: React.ReactNode }) => {
     });
   }
 
-  function updateItem(id: number, title: string, details: string) {
+  function updateItem(id: number, listProps: Partial<ListType>) {
     updateItemById(id, { id, title, details }). then(() => {
       setLists((lists) => {
         return lists.map((list) => {
